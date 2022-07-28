@@ -138,6 +138,10 @@ if not have_runtime():
 
 ## What's new
 
+-3.3.0-
+
+Delete the NewWindowRequest event.
+
 -3.2.0-
 
 Add some functions. Add some event callback methods. Download setup.exe in working path.

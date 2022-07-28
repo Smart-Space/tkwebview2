@@ -48,8 +48,8 @@ class WebView2(Frame):
         user32.MoveWindow(self.chwnd,0,0,self.winfo_width(),self.winfo_height(),True)
     def __load_core(self,sender,_):
         self.core=sender.CoreWebView2
+        self.core.NewWindowRequested-=self.web_view.on_new_window_request
         if self.newwindow!=None:
-            self.core.NewWindowRequested-=self.web_view.on_new_window_request
             self.core.NewWindowRequested+=self.newwindow
         
     def get_url(self):
@@ -120,7 +120,7 @@ def main():
         deferral = args.GetDeferral()
         args.NewWindow = frame.core
         deferral.Complete()
-    if  have_runtime():#没有webview2 runtime
+    if not have_runtime():#没有webview2 runtime
         install_runtime()
     root=Tk()
     root.title('pywebview for tkinter test')
