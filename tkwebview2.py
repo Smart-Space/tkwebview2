@@ -1,4 +1,5 @@
 from tkinter import Frame,Tk,Button
+from tkinter import ttk
 import ctypes
 from uuid import uuid4
 import clr
@@ -23,7 +24,7 @@ class WebView2(Frame):
                       resizable=True, fullscreen=False, min_size=(200, 100), hidden=False,
                       frameless=False, easy_drag=True,
                       minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                      transparent=False, text_select=False, localization=None)
+                      transparent=False, text_select=True, localization=None)
         self.web_view=EdgeChrome(control,window)
         self.control=control
         self.web=self.web_view.web_view
