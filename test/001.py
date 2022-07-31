@@ -6,7 +6,7 @@ tkinter输入框在网页控件获取焦点后，无法继续获取焦点使用�
 本次测试将测试winform的输入框能够规避这个问题。
 实用：否
 '''
-from tkinter import Frame,Tk,Button
+from tkinter import Frame,Tk,Button,Entry
 from tkinter import ttk
 import ctypes
 import clr
@@ -65,14 +65,13 @@ def main():
     frame.pack(side='left')
     frame.event_new_window(frame_new)
 
-    entry=tkTextBox(root)
-    entry.place(x=500,y=5,width=600,height=50)
-    entry.tb.KeyDown+=loadurl
-
     noen=ttk.Entry(root,font='微软雅黑 14')
     noen.insert(0,'tkinter输入框')
     noen.place(x=500,y=80,width=600,height=50)
-    
+    entry=tkTextBox(noen)
+    entry.pack(fill='both',expand=True)
+    entry.tb.KeyDown+=loadurl
+
     root.mainloop()
 
 

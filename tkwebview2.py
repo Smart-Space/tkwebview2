@@ -1,3 +1,8 @@
+'''
+<tkwebview2，基于WebView2的tkinter网页控件>
+    Copyright (C) <2021-present>  <张峻铭>
+MIT许可证
+'''
 from tkinter import Frame,Tk,Button
 from tkinter import ttk
 import ctypes
