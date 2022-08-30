@@ -99,7 +99,7 @@ class WebView2(Frame):
 windows=[]
 
 
-def have_runtime():#检测是否含义webview2 runtime
+def have_runtime():#检测是否存在并且符合版本要求webview2 runtime
     from webview.platforms.winforms import _is_chromium
     return _is_chromium()
 
