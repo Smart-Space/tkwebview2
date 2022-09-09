@@ -55,6 +55,7 @@ def main():
         deferral.Complete()
     def loadurl(s,e):
         if e.KeyCode==Keys.Enter:
+            print(Keys.Enter)
             url=entry.get()
             frame.load_url(url)
     root=Tk()
