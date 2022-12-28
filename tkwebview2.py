@@ -1,15 +1,9 @@
-'''
-<tkwebview2，基于WebView2的tkinter网页控件>
-    Copyright (C) <2021-present>  <张峻铭>
-MIT许可证
-'''
 from tkinter import Frame,Tk,Button
-from tkinter import ttk
 import ctypes
 from uuid import uuid4
 import clr
 from webview.window import Window
-from webview.platforms.edgechromium import EdgeChrome,CoreWebView2Environment
+from webview.platforms.edgechromium import EdgeChrome
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Threading')
 from System.Windows.Forms import Control
@@ -29,7 +23,7 @@ class WebView2(Frame):
                       resizable=True, fullscreen=False, min_size=(200, 100), hidden=False,
                       frameless=False, easy_drag=True,
                       minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                      transparent=False, text_select=True, localization=None)
+                      transparent=False, text_select=False, localization=None)
         self.web_view=EdgeChrome(control,window)
         self.control=control
         self.web=self.web_view.web_view
@@ -99,7 +93,7 @@ class WebView2(Frame):
 windows=[]
 
 
-def have_runtime():#检测是否存在并且符合版本要求webview2 runtime
+def have_runtime():#检测是否含义webview2 runtime
     from webview.platforms.winforms import _is_chromium
     return _is_chromium()
 

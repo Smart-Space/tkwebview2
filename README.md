@@ -138,6 +138,10 @@ if not have_runtime():
 
 ## What's new
 
+-3.3.1-
+
+fix an `import` bug.
+
 -3.3.0-
 
 Delete the NewWindowRequest event.
