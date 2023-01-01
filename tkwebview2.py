@@ -23,7 +23,7 @@ class WebView2(Frame):
                       resizable=True, fullscreen=False, min_size=(200, 100), hidden=False,
                       frameless=False, easy_drag=True,
                       minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                      transparent=False, text_select=False, localization=None)
+                      transparent=False, text_select=True, localization=None)
         self.web_view=EdgeChrome(control,window)
         self.control=control
         self.web=self.web_view.web_view
@@ -51,6 +51,9 @@ class WebView2(Frame):
         self.core.NewWindowRequested-=self.web_view.on_new_window_request
         if self.newwindow!=None:
             self.core.NewWindowRequested+=self.newwindow
+        settings = sender.CoreWebView2.Settings#设置
+        settings.AreDefaultContextMenusEnabled=True#菜单
+        settings.AreDevToolsEnabled=True#开发者工具
         
     def get_url(self):
         #返回当前url，若果没有则为空
