@@ -56,9 +56,12 @@ class WebView2(Frame):
         #返回当前url，若果没有则为空
         return self.web_view.get_current_url()
 
-    def evaluate_js(self,script):
+    def evaluate_js(self,script,uid='master',callback=None):
         #执行javascript代码，并返回最终结果
-        return self.web_view.evaluate_js(script)
+        if callback!=None:
+            return self.web_view.evaluate_js(script,uid,callback)
+        else:
+            return self.web_view.evaluate_js(script,uid)
 
     def load_css(self,css):
         #加载css
@@ -93,7 +96,7 @@ class WebView2(Frame):
 windows=[]
 
 
-def have_runtime():#检测是否含义webview2 runtime
+def have_runtime():#检测是否含有webview2 runtime
     from webview.platforms.winforms import _is_chromium
     return _is_chromium()
 
