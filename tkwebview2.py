@@ -1,13 +1,17 @@
 from tkinter import Frame,Tk,Button
+from tkinter import filedialog
 import ctypes
+import os
+from threading import Event, Semaphore, Thread
 from uuid import uuid4
 import clr
 from webview.window import Window
 from webview.platforms.edgechromium import EdgeChrome
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Threading')
+from System import IntPtr, Int32, Func, Type, Environment
 from System.Windows.Forms import Control
-from System.Threading import Thread,ApartmentState,ThreadStart
+from System.Threading import Thread,ApartmentState,ThreadStart,SynchronizationContext,SendOrPostCallback
 
 user32=ctypes.windll.user32
 
@@ -23,8 +27,10 @@ class WebView2(Frame):
                       resizable=True, fullscreen=False, min_size=(200, 100), hidden=False,
                       frameless=False, easy_drag=True,
                       minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                      transparent=False, text_select=True, localization=None)
-        self.web_view=EdgeChrome(control,window)
+                      transparent=False, text_select=True, localization=None,
+                      zoomable=True, draggable=True, vibrancy=False)
+        self.window=window
+        self.web_view=EdgeChrome(control,window,None)
         self.control=control
         self.web=self.web_view.web_view
         windows.append(window)
@@ -34,6 +40,7 @@ class WebView2(Frame):
         self.chwnd=int(str(self.control.Handle))
         user32.SetParent(self.chwnd,self.winfo_id())
         user32.MoveWindow(self.chwnd,0,0,width,height,True)
+        self.loaded=window.events.loaded
         self.__go_bind()
         if url!='':
             self.load_url(url)
@@ -54,17 +61,49 @@ class WebView2(Frame):
         settings = sender.CoreWebView2.Settings#设置
         settings.AreDefaultContextMenusEnabled=True#菜单
         settings.AreDevToolsEnabled=True#开发者工具
+        #self.core.DownloadStarting+=self.__download_file
+
+    def __download_file(self,sender,args):
+        #deferral = args.GetDeferral()
+        #args.Handle=True#working
+        def UpdateProgress(download):
+            def state(sender,e):
+                s=download.State.ToString()
+                if s==0:
+                    return
+                elif s=='Interrupted':
+                    print(args.DownloadOperation.InterruptReason)
+                elif s=='Completed':
+                    print('Complete')
+            download.StateChanged += state
+            #deferral.Complete()
+        def __dd(e):
+            path=filedialog.askdirectory(initialdir=args.ResultFilePath,title='下载')
+            fname=os.path.basename(args.DownloadOperation.ResultFilePath)
+            if path==None:
+                args.Cancel=True
+            else:
+                self.core.OpenDefaultDownloadDialog()
+                args.ResultFilePath=path+'/'+fname
+                #print(args.DownloadOperation.ResultFilePath)
+                UpdateProgress(args.DownloadOperation)
+                print('ok')
+            #deferral.Complete()
+        #__dd(None)
+        SynchronizationContext.Current.Post(SendOrPostCallback(__dd),None)
         
     def get_url(self):
         #返回当前url，若果没有则为空
         return self.web_view.get_current_url()
 
-    def evaluate_js(self,script,uid='master',callback=None):
+    def evaluate_js(self,script,callback=None):
         #执行javascript代码，并返回最终结果
+        js_r=[]
+        semaphore=Semaphore(1)
         if callback!=None:
-            return self.web_view.evaluate_js(script,uid,callback)
+            return self.web_view.evaluate_js(script,semaphore,js_r,callback)
         else:
-            return self.web_view.evaluate_js(script,uid)
+            return self.web_view.evaluate_js(script,semaphore,js_r)
 
     def load_css(self,css):
         #加载css
@@ -124,6 +163,7 @@ def install_runtime():#安装webview2 runtime
 def main():
     def frame_new(sender,args):
         deferral = args.GetDeferral()
+        args.Handled = True
         args.NewWindow = frame.core
         deferral.Complete()
     if not have_runtime():#没有webview2 runtime
@@ -139,8 +179,9 @@ def main():
 
     frame2=WebView2(root,500,500)
     frame2.pack(side='left',padx=20,fill='both',expand=True)
-    frame2.load_url('https://smart-space.com.cn/')
+    frame2.load_url('https://smart-space.com.cn/project/TinUI/index.html')
     Button(root,text='重载[左]',command=frame.reload).pack()
+    root.after(5000,lambda : frame2.evaluate_js('document.title',print))
     
     root.mainloop()
     

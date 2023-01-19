@@ -71,9 +71,11 @@ if __name__ == "__main__":
 
 返回当前url。
 
-### evaluate_js(self,script)
+### evaluate_js(self,script,callback=None)
 
 执行JavaScript代码，并返回最终结果。
+
+callback绑定一个函数，回调js执行返回内容。
 
 ### load_css(self,css)
 
@@ -137,6 +139,22 @@ if not have_runtime():
 ---
 
 ## What's new
+
+-3.5.0-
+
+fix **initialization** bug caused by pywebview new version.
+
+-3.4.0-
+
+text_select, menu, devtools  are enabled.
+
+-3.3.3-
+
+add new demo contributed by [tt68686](https://blog.csdn.net/tt68686), `002.py` Licene: MPL v2.0.
+
+-3.3.2-
+
+fix the js function.
 
 -3.3.1-
 
