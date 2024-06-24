@@ -123,7 +123,9 @@ from tkwebview2.tkwebview2 import have_runtime
 print(have_runtime())
 ```
 
-### install_runtime()
+### install_runtime(ssl:bool=True)
+
+ssl::是否启用强制ssl证书检查
 
 下载并安装运行环境。
 
