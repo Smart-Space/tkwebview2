@@ -5,6 +5,7 @@ import os
 from threading import Event, Semaphore, Thread
 from uuid import uuid4
 import clr
+import webview
 from webview.window import Window
 from webview.platforms.edgechromium import EdgeChrome
 from webview.guilib import initialize
@@ -33,7 +34,10 @@ class WebView2(Frame):
         self.window=window
         self.web_view=EdgeChrome(control,window,None)
         self.control=control
-        self.web=self.web_view.web_view
+        if hasattr(self.web_view,'webview'):
+            self.web=self.web_view.webview
+        else:
+            self.web=self.web_view.web_view
         windows.append(window)
         self.width=width
         self.height=height
