@@ -1,8 +1,10 @@
 # tkwebview2
 
-tkinter浏览器-网页组件，tkwebview2登场！！！
+<del>tkinter浏览器-网页组件，tkwebview2登场！！！</del>
 
-基于pythonnet-webview绑定和WebView2.Core，将受到微软WebView2的持续改进支持，外观和效能相比`tkinterie`得到大幅度改进。
+<del>基于pythonnet-webview绑定和WebView2.Core，将受到微软WebView2的持续改进支持，外观和效能相比`tkinterie`得到大幅度改进。</del>
+
+**本项目归档，替代项目见[Smart-Space/tkwebview](https://github.com/Smart-Space/tkwebview)。**
 
 ## 依赖
 
